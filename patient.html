@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f0f8ff, #e1bee7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .heading {
+            text-align: center;
+        }
+        .registration-container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            width: 700px;
+            max-width: 95%;
+            text-align: left;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .otp-button,.btn-submit {
+            background: linear-gradient(135deg, #880e4f, #ad1457);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .otp-button:hover,.btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 18px rgba(136, 14, 79, 0.4);
+        }
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+        }
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-container input {
+            flex: 1;
+            padding-right: 50px;
+        }
+        .end{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <h2 class="heading">Patient Registration</h2>
+        <h3>Personal Information</h3>
+        <form id="doctorRegistrationForm">
+            <div class="form-group"><label for="fullName">Full Name *</label><input type="text" id="fullName" required></div>
+            <div class="form-group"><label for="age">Age *</label><input type="number" id="age" required></div>
+            <div class="form-group"><label for="dob">Date of Birth (DOB) *</label><input type="date" id="dob" required></div>
+            <div class="form-group"><label for="address">Address *</label><input type="text" id="address" required></div>
+            <div class="form-group"><label for="city">City *</label><input type="text" id="city" required></div>
+            <div class="form-group"><label for="state">State *</label><input type="text" id="state" required></div>
+            <div class="form-group"><label for="pincode">Pincode *</label><input type="text" id="pincode" required></div>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" required>
+                <button type="button" class="otp-button" onclick="sendOTP('phone')">Send OTP</button>
+                <input type="text" id="phoneOtp" placeholder="Enter OTP" required>
+            </div>
+            <div class="form-group"><label for="altPhone">Alternate Phone Number (if any)</label><input type="tel" id="altPhone"></div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" required>
+                <button type="button" class="otp-button" onclick="sendOTP('email')">Send OTP</button>
+                <input type="text" id="emailOtp" placeholder="Enter OTP" required>
+            </div>
+            <div class="form-group">
+                <label for="maritalStatus">Marital Status *</label>
+                <select id="maritalStatus" required>
+                    <option>Married</option>
+                    <option>Single</option>
+                    <option>Widow</option>
+                    <option>Divorced</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            
+            <h3>Emergency Contact Information</h3>
+            <div class="form-group"><label for="emergencyName">Emergency Contact Person Name *</label><input type="text" id="emergencyName" required></div>
+            <div class="form-group"><label for="relationship">Relationship with Patient *</label><input type="text" id="relationship" required></div>
+            <div class="form-group"><label for="emergencyPhone">Phone Number *</label><input type="tel" id="emergencyPhone" required></div>
+            
+
+            <h3>Pregnancy Information</h3>
+            <div class="form-group"><label>Are you pregnant now?</label><select id="pregnant"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label for="monthsPregnant">If Yes, Number of Months Pregnant</label><input type="number" id="monthsPregnant"></div>
+            <div class="form-group"><label for="edd">Estimated Due Date (EDD)</label><input type="date" id="edd"></div>
+            <div class="form-group"><label>First Pregnancy?</label><select id="firstPregnancy"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label for="previousPregnancies">Number of Previous Pregnancies</label><input type="number" id="previousPregnancies"></div>
+            <div class="form-group"><label for="miscarriages">Number of Miscarriages (if any)</label><input type="number" id="miscarriages"></div>
+            <div class="form-group"><label for="childrenDelivered">Number of Children Delivered</label><input type="number" id="childrenDelivered"></div>
+            <div class="form-group"><label for="lmp">Last Menstrual Period (LMP)</label><input type="date" id="lmp"></div>
+            <div class="form-group"><label>Any Complications in Previous Pregnancy?</label><select id="complications"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label for="complicationDetails">If Yes, Please Specify</label><input type="text" id="complicationDetails"></div>
+            <div class="form-group"><label>Any Current Health Issues?</label><select id="healthIssues"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label for="healthIssueDetails">If Yes, Please Specify</label><input type="text" id="healthIssueDetails"></div>
+            
+
+            <h3>Medical History</h3>
+            <div class="form-group"><label>Any Ongoing Medications?</label><select id="medications"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label>If Yes, Please Mention</label><input type="text" id="medicationDetails"></div>
+            <div class="form-group"><label>Any Allergies to Medicines or Food?</label><select id="allergies"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label>If Yes, Please Specify</label><input type="text" id="allergyDetails"></div>
+            <div class="form-group"><label>Family Medical History</label><input type="text" id="familyHistory"></div>
+            
+            <h3>Caste (Optional)</h3>
+            <div class="form-group"><label>Caste</label><input type="text" id="caste"></div>
+            <div class="form-group"><label>Religion</label><input type="text" id="religion"></div>
+            
+            <h3>Insurance Information (if any)</h3>
+            <div class="form-group"><label>Do you have any Health Insurance?</label><select id="insurance"><option>Yes</option><option>No</option></select></div>
+            <div class="form-group"><label>Insurance Provider Name</label><input type="text" id="insuranceProvider"></div>
+            <div class="form-group"><label>Policy Number</label><input type="text" id="policyNumber"></div>
+            <div class="form-group"><label>Coverage Details</label><input type="text" id="coverageDetails"></div>
+            
+            <h3>Dietary Habits</h3>
+            <div class="form-group">
+                <label>Dietary Preference</label>
+                <select id="diet">
+                    <option>Vegetarian</option>
+                    <option>Non-Vegetarian</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Register</button>
+        </form>
+    </div>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
